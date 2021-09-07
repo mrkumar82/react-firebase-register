@@ -1,11 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { auth } from "../config/fbconfig";
 
 function Signin(props) {
   const emailRef = useRef(null);
   const passRef = useRef(null);
-
+  const [error, setError] = useState("");
   const signIn = (e) => {
     e.preventDefault();
     auth
@@ -15,7 +15,9 @@ function Signin(props) {
         props.history.push("/home");
       })
       .catch((error) => {
-        console.log(error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorMessage);
       });
   };
 
@@ -24,26 +26,18 @@ function Signin(props) {
       <div className="row">
         <form className="col s12" onSubmit={signIn}>
           <h5>Sign In</h5>
+
+          <div className="error">{error}</div>
           <div className="row">
             <div className="input-field col s6">
-              <input
-                ref={emailRef}
-                id="input_text"
-                type="text"
-                data-length="10"
-              />
+              <input ref={emailRef} id="input_text" type="text" />
               <label htmlFor="input_text">Email</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s6">
-              <input
-                ref={passRef}
-                id="input_text"
-                type="password"
-                data-length="10"
-              />
-              <label htmlFor="textarea2">Password</label>
+              <input ref={passRef} id="password" type="password" />
+              <label htmlFor="password">Password</label>
             </div>
           </div>
 
