@@ -1,18 +1,20 @@
 import React, { useRef } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { auth } from "../config/fbconfig";
 
-function Signin(props) {
+function SignUp() {
   const emailRef = useRef(null);
   const passRef = useRef(null);
 
-  const signIn = (e) => {
+  const signUp = (e) => {
     e.preventDefault();
     auth
-      .signInWithEmailAndPassword(emailRef.current.value, passRef.current.value)
+      .createUserWithEmailAndPassword(
+        emailRef.current.value,
+        passRef.current.value
+      )
       .then((user) => {
-        console.log("userpros", user);
-        props.history.push("/home");
+        console.log(user);
       })
       .catch((error) => {
         console.log(error);
@@ -20,10 +22,10 @@ function Signin(props) {
   };
 
   return (
-    <div className="signin container">
+    <div className="signUp container">
       <div className="row">
-        <form className="col s12" onSubmit={signIn}>
-          <h5>Sign In</h5>
+        <form className="col s12" onSubmit={signUp}>
+          <h5>Sign Up</h5>
           <div className="row">
             <div className="input-field col s6">
               <input
@@ -50,12 +52,12 @@ function Signin(props) {
           <div className="row">
             <div className="input-field col s6 left-align">
               <button type="submit" className="btn">
-                SignIn
+                SignUp
               </button>
             </div>
           </div>
           <h6 className="left-align">
-            Not yeat register? <Link to="/signup">Sign Up</Link> here
+            Login here<Link to="/signin">Sign in</Link> here
           </h6>
         </form>
       </div>
@@ -63,4 +65,4 @@ function Signin(props) {
   );
 }
 
-export default Signin;
+export default SignUp;
